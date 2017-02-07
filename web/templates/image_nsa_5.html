@@ -1,0 +1,510 @@
+<!doctype html>
+<html>
+  <head>
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>   
+  </head>
+  
+  
+  
+  <body>    
+  
+  
+  
+ <div id="tt" class="easyui-tabs" style="width:100%;height:auto;">
+	 
+	 
+	 
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+  <div title="Overview" style="padding:10px">
+	  
+<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+	  
+			 <div id="summaryy" style="width:auto;height:auto;padding-bottom:60px">
+			 <ul>
+				<li><b>image</b>    image name
+				<li><b>bin_thr</b>  threshold of binarization
+				<li><b>total</b>    total number of objects
+				<li><b>selected</b> number of objects in the length range, with a linear structure and not on the border 
+				<li><b>no pk</b>    number of selected objects without any peak
+				<li><b>one pk</b>   number of selected objects with one peak
+				<li><b>two pk</b>   number of selected objects with two peaks
+				<li><b>more pk</b>  number of selected objects with three or more peaks
+				<li><b>border</b>   number of objects located at the proximity of the border (not considered)
+				<li><b>bad strct</b>  number of objects with a non-linear structure  (not considered)
+				<li><b>bad size </b>  number of too long or too short objects  (not considered)
+				<li><b>time</b>     time used to processed each images (seconds)
+							
+   			 </ul> 
+
+			 <table id="dgs" class="easyui-datagrid" title="Statistics" style="width:auto;height:auto" data-options="singleSelect:true,collapsible:true,url:'/summary_table/{{idd}}',method:'get',rownumbers:true,pagination:false,pageSize:10,autoRowHeight:false">
+			  <thead>
+				<tr>
+				<th data-options="field:'image'">image</th>
+				<th data-options="field:'btv'">bin_thr</th>
+				<th data-options="field:'shape',align:'center'", bgcolor="red">size</th>
+				<th data-options="field:'total',align:'right'">total</th>
+				<th data-options="field:'selected',align:'right'">selected</th>
+				<th data-options="field:'no_peak',align:'right'">no pk</th>
+				<th data-options="field:'one_peak',align:'right'">one pk</th>
+				<th data-options="field:'two_peaks',align:'right'">two pks</th>
+				<th data-options="field:'more_peaks',align:'right'">more pks</th>
+				<th data-options="field:'border',align:'right'">border</th>
+				<th data-options="field:'structure',align:'right'">bad strct</th>
+				<th data-options="field:'length',align:'right'">bad size</th>
+				<th data-options="field:'background_raw',align:'right'">bckgd raw</th>
+				<th data-options="field:'background_inversed',align:'right'">bckgd inversed</th>
+				<th data-options="field:'time',align:'right'">time</th>
+			</tr>
+				</thead>
+			 </table>
+		   
+		
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+		</div>   
+		
+	  
+	  
+      <div class="easyui-layout" style="width:100%;height:500px">
+          <div data-options="region:'center',title:'Images',iconCls:'icon-ok'" style="padding:10px,width=500px;">
+			  
+			  
+			  
+			 <ul>
+				<li><b>image</b>    image name
+				<li><b>bin_thr</b>  threshold of binarization
+				<li><b>raw</b>      submitted image converted to greyscale (dark background)
+				<li><b>inverted</b> inverted greyscale image (light background)
+				<li><b>binary</b>   binarized image (using the given threshold)
+				<li><b>labelized</b> binarized image with greyscale color corresponding to the object labels/numbers (useless)
+				<li><b>colored</b>  binarized image with a color code for characterizing all objects				
+   			 </ul> 
+	
+				      <table>
+					  				<tr><th class="ct">image - bin_thr</th>
+					  				    <th class="ct">raw</th>
+					  				    <th class="ct">inverted</th>
+					  				    <th class="ct">binary</th>
+					  				    <th class="ct">labelized</th>
+					  				    <th class="ct">colored</th>
+					  				    </tr>
+						{% for kk,myitem in dd.items() %}
+						  	{% set count = 1 %}
+						
+						
+							{% for btv,myitem2 in myitem['btv_data'] | dictsort(false, 'key') %}
+									<tr><td span=1>{{myitem['original_name']}} - {{btv}} - {{xx}}</td>
+											{% if count == 1 %} 
+												<td> <div class='image1'><a href="/data/{{raw}}"><img src="{{myitem['raw_name']}}" ></a></div></td>
+												<td> <div class='image1'><img src="{{myitem['inversed_name']}}" ></div></td>
+											{% else %}
+												<td> </td>
+												<td> </td>
+											
+											
+											{% endif %}											
+												<td> <div class='image1'><img src="{{myitem2['binary_name']}}" ></div></td>			
+												<td> <div class='image1'><img src="{{myitem2['labelized_name']}}" ></div></td>			
+												<td> <div class='image1'><img src="{{myitem2['colored_name']}}" ></div></td>			
+									</tr>
+									<tr><td></td></tr>
+								{% set count = count + 1 %}
+								{% endfor %}							
+						{% endfor %}
+                    </table>
+  <table>
+                    <tr >
+					<td class="colorlegend">Color code: </td>
+					<td class="colorlegend">border</td><td width="5px" bgcolor="#FF00FF"></td>
+					<td class="colorlegend">bad structure</td><td width="3px" bgcolor="#00FFFF"></td>
+					<td class="colorlegend">bad size</td><td width="3px" bgcolor="#FFFF00"></td>
+					<td class="colorlegend">no peak</td><td width="3x" bgcolor="#00FF00"></td>
+					<td class="colorlegend">one peak</td><td width="3px" bgcolor="#FF0000"></td>
+					<td class="colorlegend">two peaks</td><td width="3px" bgcolor="#0000FF"></td>
+					<td class="colorlegend">more peaks</td><td width="3px" bgcolor="#888888"></td>	
+					</tr>
+                    </table>                   
+   
+			</div>   
+
+		</div>   
+		
+		
+		
+		
+		
+       </div>  
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+{% if no_skel_table == 0 %}
+
+ <div title="Skeletons" style="padding:10px">
+
+<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+
+			 <ul>
+				<li><b>image</b>    image name
+				<li><b>bin_thr</b>  threshold of binarization
+				<li><b>id</b>       id of the object
+				<li><b>border</b>   true if the object is in contact with the border (potentially incomplete)
+				<li><b>i_EP</b>   	number of end points after the skeletonization step (2: linear structure)
+				<li><b>f_EP</b>     number of end points after the linearization post-processing step (only structure with 2 EP were considered)
+				<li><b>in_len</b>   true if the object length is in the defined range (based on corr_len)
+				<li><b>corr_len</b> length of the object corrected for diagonal (in pixels)
+				<li><b>len</b>      uncorrected length (number of pixels)
+				<li><b>min</b>      minimal value for the signal (get to 0)
+				<li><b>pk_nb</b>    number of peaks
+				<li><b>x_pk_</b>    position of the peaks
+				<li><b>y_pk_</b>    signal values of the peaks (peaks are ordered by signal values)
+				
+			 </ul> 
+			 <table id="dgs2" class="easyui-datagrid" title="Information" style="width:auto;height:auto" data-options="singleSelect:true,collapsible:true,url:'/skeleton_table/{{idd}}',method:'get',rownumbers:true,pagination:false,pageSize:10000,autoRowHeight:true, autoColWidth:true">
+			  <thead>
+				<tr>
+				<th data-options="field:'image',align:'right'">image</th>
+				<th data-options="field:'binary_threshold',align:'right'">bin_thr</th>
+				
+				<th data-options="field:'id',align:'right'">id</th>
+				<th data-options="field:'on_border',align:'right'">border</th>
+				<th data-options="field:'initial_EP',align:'right'">i_EP</th>
+				<th data-options="field:'final_EP',align:'right'">f_EP</th>
+				<th data-options="field:'in_length_range',align:'right'">in_len</th>
+				<th data-options="field:'pixel_length',align:'right'">corr_len</th>
+				<th data-options="field:'pixel_number',align:'right'">len</th>
+				<th data-options="field:'min_signal',align:'right'">min</th>
+				<th data-options="field:'peak_number',align:'right'">pk_nb</th>
+				{% for ii in peak_nb %}
+					<th data-options="field:'x_peak{{ii}}',align:'right'">x_pk_{{ii}}</th>
+				{% endfor %}				
+				{% for ii in peak_nb %}
+					<th data-options="field:'y_peak{{ii}}',align:'right'">y_pk_{{ii}}</th>
+				{% endfor %}				
+				</tr>
+				</thead>
+			 </table>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/datagrid-filter.js') }}"></script>
+    <script type="text/javascript">
+		$('#dgs2').datagrid({
+			rowStyler: function(index,row){
+				
+				if ((! row.on_border) && row.in_length_range){
+					return 'background-color:#FFACEC;color:#000000;'; // return inline style
+				}
+
+					// the function can return predefined css class and inline style
+					// return {class:'r1', style:{'color:#fff'}};	
+	}
+});  
+
+
+
+        $(function(){
+            var dgs2 = $('#dgs2').datagrid();
+            dgs2.datagrid('enableFilter', [{
+                field:'init_number_endpoints',
+                type:'numberbox',
+                options:{precision:0},
+                op:['equal','notequal','less','greater']
+            },{
+                field:'final_number_endpoints',
+                type:'numberbox',
+                options:{precision:0},
+                op:['equal','notequal','less','greater']
+            },{
+                field:'length',
+                type:'numberbox',
+                options:{precision:1},
+                op:['equal','notequal','less','greater']
+ 
+            }]);
+        });
+
+
+
+
+
+
+
+     
+		</script>
+
+       <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+	</div>
+
+{% endif %}
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+
+	<div title="Signal plots" style="padding:10px">
+<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+
+		<div style="margin:20px 0;"></div>
+			<table>
+										{% for nm,line in signal_plots.items()  %}
+											<tr>
+											<td>{{line['name']}} - {{line['btv']}}</td>
+												{% for yy in line['plots']  %}
+													<td><div class='image3'><img src="{{yy}}" ></div></td>
+												{% endfor %}										
+											</tr>
+										{% endfor %}										
+			</table>
+		</div>
+		
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+            
+        </style>   
+
+
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+  <div title="Downloads" style="padding:10px">
+	  
+	  <div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+
+      <div class="easyui-layout" style="width:100%;height:500px">
+				      <table>
+					  				<tr><td>Data file:</td>
+										<td><a href={{working_dir}}/{{datafile}}>{{datafile}}</a></td>
+					  				    </tr>
+ 					  				<tr><td>Zip file:</td>
+										<td><a href={{working_dir}}/{{zipdatafile}}> {{zipdatafile}}</a></td>
+					  				    </tr>
+                    </table>
+                    
+   
+			</div>   
+       </div>  
+       
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->       
+       
+	{% for image, info in ps.items() %}
+	<div title="{{image}}" style="padding: 10px; padding-top:10px;padding-bottom:500px">
+<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+		<div style="margin:20px 0;"></div>
+
+			<style type="text/css">
+/* set the size of the definition list <dl> and add the background image */
+#imap-{{image}} {
+  display:block; 
+  width:{{info["image_height"]}}px; 
+  height:{{info["image_width"]}}px; 
+  background:url(/{{info["colored"]}}) no-repeat; 
+  position:relative;
+  z-index:1;
+  }
+/* the hack for IE pre IE6 */
+* html #imap a:hover span {
+  width:{{info["image_height"]}}px; width:{{info["image_width"]}}px;
+  } 
+
+
+  
+/* set up the definition list <dt><a> to hold the background image for the hover state */  
+#imap-{{image}} a#title {
+  display:block; 
+  width:{{info["image_height"]}}px; 
+  height:0; 
+  padding-top:{{info["image_width"]}}px; 
+  overflow:hidden; 
+  position:absolute; 
+  left:0; 
+  top:0;
+  background:transparent url(/{{info["colored"]}}) no-repeat; 
+  cursor:default;
+  }
+  
+/* the <dt><a> hover style to move the background image to position 0 0 */  
+/*
+#imap-{{image}} a#title:hover {
+  background-position: 0 0; 
+  z-index:10;
+  } 
+  */
+#imap-{{image}} dd {
+  position:absolute; 
+  padding:0; 
+  margin:0;
+  }
+
+#imap-{{image}} a span, #imap-{{image}} a:visited span {
+  display:none;
+  }
+  
+{% for sk, sk_info in info["skels"].items() %}
+
+#imap-{{image}} #skel{{sk}} {
+  left:{{sk_info["sk_limit2"][2]}}px; 
+  top:{{sk_info["sk_limit2"][0]}}px; 
+  z-index:20;
+  }
+  
+  
+/* style the <dd><a> links physical size and the background image for the hover */
+#imap-{{image}} a#skeleton{{sk}} {
+  display:block; 
+  width:{{  sk_info["sk_limit2"][3] - sk_info["sk_limit2"][2] + 1 }}px; 
+  height:{{ sk_info["sk_limit2"][1] - sk_info["sk_limit2"][0] + 1}}px; 
+  background: transparent;
+  text-decoration:none; 
+  z-index:20;
+  }	
+  
+ /* move the span text to a common position at the bottom of the image map */
+#imap-{{image}} a#skeleton{{sk}}:hover span {
+  left:{{ sk_info["sk_limit2"][3] -  sk_info["sk_limit2"][2]}}px; 
+  top:{{  sk_info["sk_limit2"][1] -  sk_info["sk_limit2"][0]}}px;
+ }
+ 
+  /* move the link background image to position 0 0 when hovered */
+#imap-{{image}} a#skeleton{{sk}}:hover {
+  background: rgba(255,255,255,0.2);
+  }
+  
+  
+	{% endfor %}
+
+/* define the common styling for the span text */
+#imap-{{image}} a:hover span {
+  position:absolute;  
+  width:300px; 
+  display:block; 
+  font-family:arial; 
+  font-size:12px; 
+  background:#fff; 
+  background:url(/static/white_box.png);
+  color:#000; 
+  z-index:50;
+  border: 5px solid #000; 
+  padding:5px;
+  }
+</style>  
+  
+  
+</style>
+
+<dl id="imap-{{image}}">
+	<dt>
+		<a id="title" href="#nogo" title="Nice Image-{{image}}">
+		Image-{{image}}
+		</a>	
+	</dt>
+	{% for sk, sk_info in info["skels"].items() %}
+	<dd id="skel{{sk}}">
+		<a id="skeleton{{sk}}" title="Beautiful skeleton {{sk}}" href="#nogo">
+		<span>
+			Skeleton {{sk}} !!!
+			<br />
+			<br />
+			border: {{sk_info["border"]}}<br>
+			structure: {{sk_info["init_number_endpoints"]}} to {{sk_info["final_number_endpoints"]}}  <br>
+			length: {{"%.2f"|format(sk_info["skel_length"])}} ({{sk_info["inLengthRange"]}}) <br>
+			peaks: {{sk_info["nb_peaks"] }} ({{sk_info["peaks2"]  | FormatDecimal }} - {{ sk_info["values_at_peaks"]  | FormatDecimal}}) <br>
+			<table>
+				<tr>
+						<td><div class='image4'><img src="{{working_dir}}/{{image_dir}}/{{image}}_sk{{sk}}_inverted.png" ></div></td>
+						<td><div class='image4'><img src="{{working_dir}}/{{image_dir}}/{{image}}_sk{{sk}}_skel.png" ></div></td>
+				</tr>
+			</table>			
+			
+		</span>
+		</a>
+	</dd>
+	{% endfor %}
+	
+</dl>
+					
+ 
+		</div>
+	{% endfor %}
+	
+          
+       
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+  <div title="Parameters" style="padding:10px">
+<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+      <div class="easyui-layout" style="width:100%;height:500px">
+				      <table>
+					  				<tr><th class="ct">name</th>
+					  				    <th class="ct">value</th>
+					  				    </tr>
+					  				<tr><td>ID</td>
+										<td>{{idd}}</td>
+					  				    </tr>
+						{% for kk,myitem in parameters.items() %}
+						 				<tr>				
+												<td> {{kk}}</td>			
+												<td> {{myitem}}</td>			
+										</tr>
+						{% endfor %}
+                    </table>
+   <br><br><br><br>                 
+   Live long and prosper !!
+			</div>   
+       </div>  
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+    </div>
+    
+  </body>
+</html>

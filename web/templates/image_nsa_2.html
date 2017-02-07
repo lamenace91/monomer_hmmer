@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+  <head>
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>   
+  </head>
+  
+  
+  
+  <body>    
+    <div class="easyui-layout" style="width:800px;height:400px;">
+          <div data-options="region:'center',title:'Image processing',iconCls:'icon-ok'" style="padding:10px,width=400px;">
+                  <table>
+					  				<tr><th>tag</th><th>raw</th><th>inverted</th><th>binary</th><th>labelized</th></tr>
+
+						{% for raw,gray,inverted,binary,labelized,tag in raw_images %}
+									<tr><td span=1>{{tag}}</td>
+												<td> <div class='image1'><a href="/data/{{raw}}"><img src="{{working_dir}}/{{raw}}" ></a></div></td>
+									    <!--	<td> <div class='image1'><img src="{{working_dir}}/{{gray}}" ></div></td>   -->
+												<td> <div class='image1'><img src="{{working_dir}}/{{inverted}}" ></div></td>
+												<td> <div class='image1'><img src="{{working_dir}}/{{binary}}" ></div></td>			
+												<td> <div class='image1'><img src="{{working_dir}}/{{labelized}}" ></div></td>			
+									</tr>
+									<tr><td></td></tr>
+						{% endfor %}
+                    </table>
+  			
+        </div>
+     </div>
+     <div style="margin:20px 0;"></div>
+       <div data-options="region:'center',split:true,title:'Image summary',collapsible:false" style="width:900px;">
+			 <table id="dgs" class="easyui-datagrid" title="Summary" style="width:auto;height:auto" data-options="singleSelect:true,collapsible:true,url:'/summary_table',method:'get',rownumbers:true,pagination:true,pageSize:10,autoRowHeight:false">
+			  <thead>
+				<tr>
+				<th data-options="field:'tag',width:80">tag</th>
+				<th data-options="field:'shape',width:100">Image size (pixels)</th>
+				<th data-options="field:'total',width:80,align:'right'">tota l(#)</th>
+				<th data-options="field:'selected',width:80,align:'right'">selected (#)</th>
+				<th data-options="field:'border',width:80,align:'right'">border (#)</th>
+				<th data-options="field:'badsize',width:80,align:'right'">bad size (#)</th>
+				<th data-options="field:'time',width:80,align:'right'">processing time (s)</th>
+			</tr>
+				</thead>
+			 </table>
+		   
+		
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+		   
+        </div>  
+    <div style="margin:20px 0;"></div>
+       <div data-options="region:'center',split:true,title:'skeleton summary',collapsible:true" style="width:900px;">
+			 <table id="dgs2" class="easyui-datagrid" title="Skeleton summary" style="width:auto;height:auto" data-options="singleSelect:true,collapsible:true,url:'/skeleton_table',method:'get',rownumbers:true,pagination:true,pageSize:10000,autoRowHeight:false">
+			  <thead>
+				<tr>
+				<th data-options="field:'tag',width:80,align:'right'">tag</th>
+				<th data-options="field:'sk',width:80,align:'right'">sk</th>
+				<th data-options="field:'sk_shape',width:80,align:'right'">sk shape</th>
+				<th data-options="field:'sk_limit',width:80,align:'right'">sk limit</th>
+				<th data-options="field:'border',width:80,align:'right'">border</th>
+				<th data-options="field:'init_number_endpoints',width:120,align:'right'">initial number of EP</th>
+				<th data-options="field:'final_number_endpoints',width:150,align:'right'">final number of EP</th>
+				</tr>
+				</thead>
+			 </table>
+		   
+		
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+		   
+        </div>  
+
+
+    
+  </body>
+</html>

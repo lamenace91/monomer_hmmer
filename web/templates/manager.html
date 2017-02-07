@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    
+     <meta charset="UTF-8">
+    
+    <title>Bangsi</title>
+
+
+  
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>
+  
+
+
+
+
+  </head>
+  
+  
+  
+  <body>    
+    
+    <div id="header">
+      <h1> Welcome on ...</h1>
+    </div>
+       
+   
+     
+     
+    <div id="container">
+            
+      <div id="p" class="easyui-panel" title="List of output files" style="width:800px;height:400px;padding:10px;">
+          
+          {% for file in files %}
+            <li><a href=/download/{{directory}}/{{ subdirectory }}/{{ file }}>{{ file }}</a></li>
+          {% endfor %}
+      </div>
+            
+    </div>
+
+
+
+        
+
+
+    
+    <div id="footer">     
+        <p>Julien Cochennec - Evelyne Duvernois-Berthet</p>
+        <p>Laboratoire de Biophysique</p>
+    </div>
+
+    
+
+
+    
+  </body>
+</html>

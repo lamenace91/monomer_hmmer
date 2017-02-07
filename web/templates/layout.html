@@ -1,0 +1,347 @@
+<!doctype html>
+<html>
+  <head>
+    
+     <meta charset="UTF-8">
+    
+    <title>Bangsi</title>
+
+
+  
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css"   rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>
+  
+
+    
+  <script type="text/javascript">
+    
+    
+    // initialization of values according to the used technology
+    // ionTorrent VS illumina
+    
+    var currentValue = 0;
+    
+    function handleClick(techno) {
+      updateForm(techno.value);
+    }
+    
+    
+	</script>
+<!--
+	
+	<script language=javascript>
+    // validation of the DNA sequence of the ROI
+		function validateSequence(seq) { 
+    		var regex = /[ATCG]+\;[ATCG]+\;[ATCG]+/;
+    		return re.test(seq);
+		} 
+
+	</script>
+-->
+
+
+
+  </head>
+  
+  
+  
+  <body>    
+    
+    <div id="header">
+      <h1> Welcome on Bangsi!</h1>
+    </div>
+       
+   
+     
+     
+    <div id="container">
+
+
+      
+      
+      <form id="bangsiExec" method="post" action="/bangsiExec" enctype="multipart/form-data">
+        
+        <div class="easyui-accordion" >
+            
+              <div title="Sequences informations" style="overflow:auto;padding:10px;" data-options="iconCls:'icon-ok',collapsed:false,collapsible:false">
+            
+                <div style="padding:10px 60px 20px 60px">
+                    
+                    <table>
+                      <tr>
+                          <td colspan = "6" class="legend">Data with red star <font color="red">*</font> are required. </td>
+                      </tr>
+                      <tr><td class="label">Email<font color="red">*</font>:</td>
+                        <td colspan = "4"><input class="easyui-textbox" type="text" name="email" id="email" data-options="validType:'email', required:true"></input></td>
+                      </tr>
+                      <tr><td class="label">Title<font color="red">*</font>:</td>
+                        <td colspan = "4"><input class="easyui-textbox" type="text" name="title" data-options="required:true"></input></td>
+                      </tr>
+                      
+                                <tr><td colspan = "6" class="legend"></td></tr>
+                                
+                      <tr><td class="label">Reference sequence / ROI<font color="red">*</font>: 
+                            <a href="#" title="The complete reference sequence should be written. Semicolons ';' are used to specify the positions of the ROI." class="easyui-tooltip" position="right">
+                            <img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                        <td colspan = "4"><input class="easyui-textbox" type="text" name="ref" id="ref" data-options="prompt:'Write your reference sequence with the ROI between semicolons', required:true"></input></td>
+                      </tr>
+                      <tr><td class="label">Length before the ROI<font color="red">*</font>:</td>
+                        <td colspan = "4"><input class="easyui-numberbox"  value="20" name="minus" id="minus" data-options="required:true" ></input></td>
+                      </tr>
+                      <tr><td class="label">Length after the ROI<font color="red">*</font>:</td>
+                        <td colspan = "4"><input class="easyui-numberbox"  value="20" name="plus" id="plus" data-options="required:true" ></input></td>
+                      </tr>
+                                <tr><td colspan = "6" class="legend"></td></tr>
+                                
+                      <tr><td class="label">Load the reads of your 1st library<font color="red">*</font>:</td>
+                        <td colspan = "4"> 
+                        <input class="easyui-filebox" name="file_lib1" data-options="prompt:'Fasta/FastQ/BAM file...', required:true" style="width:100%"></td>
+                      </tr>
+                      <tr><td class="label">Tag for the 1st library:</td>
+                      	<td colspan = "4"><input class="easyui-textbox" type="text" name="tag_lib1" data-options="prompt:'Lib1'"></input></td>                    
+                      </tr>
+                      <tr><td class="label">Load the reads of your 2nd library (optional):</td>
+                        <td colspan = "4"> 
+                        <input class="easyui-filebox" name="file_lib2" data-options="prompt:'Fasta/FastQ/BAM file...'" style="width:100%"></td>
+                      </tr>
+                      <tr><td class="label">Tag for the 2nd library:</td>
+                      	<td colspan = "4"><input class="easyui-textbox" type="text" name="tag_lib2" data-options="prompt:'Lib2'"></input></td>                    
+                      </tr>
+                                <tr><td colspan = "6" class="legend"></td></tr>
+                                
+                      <tr><td class="label">Read filtering:
+                            <a href="#" title="The filtering consists in..." class="easyui-tooltip" position="right">
+                            <img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                        <td> <input id="filter" class="easyui-validatebox" type="radio" name="filter" value="filter" data-options="required:true" >Filtering</td>
+                        <td><input id="nofilter" class="easyui-validatebox" type="radio" name="filter" value="nofilter" data-options="required:true" checked="checked" >No Filtering</td>
+                      </tr> 
+                      <tr><td class="label">Random:</td>
+                        <td> <input id="norandom" class="easyui-validatebox" type="radio" name="random" value="norandom" data-options="required:true" checked="checked"  >Keep the complete datasets</td>
+                        <td><input id="random" class="easyui-validatebox" type="radio" name="random" value="random" data-options="required:true" >Extract random reads (number)</td>
+                        </tr><tr>
+                        <td></td><td></td>                        
+                        <td><input class="easyui-numberbox" name="random" id="random" ></input></td>
+                      </tr>                       
+                      <tr><td class="label">Technology<font color="red">*</font>:</td>
+                        <td> <input id="itt" class="easyui-validatebox" type="radio" name="techno" value="it" data-options="required:true" onchange="handleClick(this);">IonTorrent</td>
+                        <td><input id="ill" class="easyui-validatebox" type="radio" name="techno" value="ill" data-options="required:true" onchange="handleClick(this);">Illumina</td>
+                      </tr>
+                    </table>
+                    
+                    <div style="text-align:center;padding-top:50px">
+                      <a class="easyui-linkbutton" iconCls="icon-ok" onclick="submitForm()">Submit</a>
+                      <a class="easyui-linkbutton" iconCls="icon-reload" onclick="updateForm('it')">Refresh</a>
+                    </div>
+                    
+                </div>
+                  
+              </div>
+
+            
+              <div title="Parameters" style="padding:10px;" data-options="iconCls:'icon-help'"> <!--,collapsed:false,collapsible:false">-->
+
+                <p>Here are all the default parameters for the registered technology. You can choose to use them or to modify them.
+                </p>
+                    
+                  <div style="padding:10px 60px 20px 60px">
+                    
+                      
+                           <table class="param">
+                                <tr>
+                                    <td colspan = "6" class="legend">Data with red star <font color="red">*</font> are required. </td>
+                                </tr>
+                                      
+                            <!-- GLOBAL -->                            
+                                <tr><td colspan = "6" class="legend">Global parameters</td></tr>                            
+                                <tr><td class="label">Minimal length<font color="red">*</font>: <a href="#" title="Minimal length" class="easyui-tooltip" position="right">
+                                        <img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="minlength" id="minlength" data-options="required:true"></input></td>
+                                </tr>
+
+                            <!-- BLAST -->
+                                <tr><td colspan = "6" class="legend">Blast parameters</td></tr>
+                                <tr>
+                                  <td class="label">Gap open<font color="red">*</font>: <a href="#" title="Blast help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>                              
+                                  <td><input class="easyui-numberbox" name="blast_gapopen" id="blast_gapopen" data-options="required:true,precision:2"></input></td>
+                                  <td class="label">Reward<font color="red">*</font>: <a href="#" title="Blast help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="blast_reward" id="blast_reward" data-options="required:true,precision:2"></input></td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Gap extend<font color="red">*</font>: <a href="#" title="Blast help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="blast_gapextend" id="blast_gapextend" data-options="required:true,precision:2"></input></td>
+                                  <td class="label">Penalty<font color="red">*</font>: <a href="#" title="Blast help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="blast_penalty" id="blast_penalty" data-options="required:true,precision:2"></input></td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Word size<font color="red">*</font>: <a href="#" title="Blast help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="blast_word_size" id="blast_word_size" data-options="required:true,precision:2"></input></td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Advanced parameters: <a href="#" title="Blast help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td colspan = "5" ><input class="easyui-textbox" name="blast_advanced" id="blast_advanced"></input></td>
+                                </tr>
+
+                            <!-- NEEDLE -->
+                                <tr><td colspan = "6" class="legend">Needle parameters</td></tr>
+                                <tr><td class="label">Gap open<font color="red">*</font>: <a href="#" title="Needle help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="needle_gapopen" id="needle_gapopen" data-options="required:true,precision:2"></input></td>
+                                  <td class="label">Gap extend<font color="red">*</font> <a href="#" title="Needle help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="needle_gapextend" id="needle_gapextend" data-options="required:true,precision:2"></input></td>
+                                </tr>
+                                <tr>
+                                  <td class="label">Advanced parameters: <a href="#" title="Needle help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td colspan = "5" ><input class="easyui-textbox" name="needle_advanced" id="needle_advanced"></input></td>
+                                </tr>
+
+                            <!-- Thresholds -->
+                                <tr><td colspan = "6" class="legend">Raw type thresholds</td></tr>
+         
+                                <tr>
+                                  <td class="label">Low rate<font color="red">*</font>: <a href="#" title="Low rate" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="thresholds_lowrate" id="thresholds_lowrate" data-options="required:true"></input></td>
+                                  <td class="label">High rate<font color="red">*</font>: <a href="#" title="High rate" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="thresholds_highrate" id="thresholds_highrate" data-options="required:true"></input></td>                                  
+                                </tr>
+                                    
+                                <tr><td></td><td colspan = "4" class="sublegend">Deletions:</td></tr>
+                                <tr>
+                                  <td class="label">Other<font color="red">*</font>: <a href="#" title="Deletions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="DEL_other" id="DEL_other" data-options="required:true"></input></td>
+                                  <td class="label">Quantity<font color="red">*</font>: <a href="#" title="Deletions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="DEL_quantity" id="DEL_quantity" data-options="required:true"></input></td>
+                                  <td class="label">Slippage<font color="red">*</font>: <a href="#" title="Deletions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="DEL_slippage" id="DEL_slippage" data-options="required:true"></input></td>
+                                </tr>                           
+                                         
+                                <tr><td></td><td colspan = "4" class="sublegend">Insertions:</td></tr>
+                                <tr>
+                                  <td class="label">Other<font color="red">*</font>: <a href="#" title="Insertions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="INS_other" id="INS_other" data-options="required:true"></input></td>
+                                  <td class="label">Quantity<font color="red">*</font>: <a href="#" title="Insertions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="INS_quantity" id="INS_quantity" data-options="required:true"></input></td>
+                                  <td class="label">Slippage<font color="red">*</font>: <a href="#" title="Deletions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="INS_slippage" id="INS_slippage" data-options="required:true"></input></td>
+                                </tr>                                    
+                                    
+                                <tr><td></td><td colspan = "4" class="sublegend">Mutations:</td></tr>
+                                <tr>
+                                  <td class="label">Other<font color="red">*</font>: <a href="#" title="Unknown events help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="MUT_other" id="MUT_other" data-options="required:true"></input></td>
+                                  <td class="label">Quantity<font color="red">*</font>: <a href="#" title="Unknown events help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="MUT_quantity" id="MUT_quantity" data-options="required:true"></input></td>
+                                  <td class="label">Slippage<font color="red">*</font>: <a href="#" title="Deletions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="MUT_slippage" id="MUT_slippage" data-options="required:true"></input></td>
+                                </tr>
+
+                                <tr><td></td><td colspan = "4" class="sublegend">Ambigous:</td></tr>
+                                <tr>
+                                  <td class="label">Other<font color="red">*</font>: <a href="#" title="Unknown events help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="NA_other" id="NA_other" data-options="required:true"></input></td>
+                                  <td class="label">Quantity<font color="red">*</font>: <a href="#" title="Unknown events help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="NA_quantity" id="NA_quantity" data-options="required:true"></input></td>
+                                  <td class="label">Slippage<font color="red">*</font>: <a href="#" title="Deletions help" class="easyui-tooltip" position="right"><img src="static/js/jQuery_UI/themes/icons/help.png" ></img></a></td>
+                                  <td><input class="easyui-numberbox" name="NA_slippage" id="NA_slippage" data-options="required:true"></input></td>
+                                </tr>
+                          </table>
+   
+                  
+                    <div style="text-align:center;padding-top:50px">
+                      <a class="easyui-linkbutton" iconCls="icon-ok" onclick="submitForm()">Submit</a>
+                      <a class="easyui-linkbutton" iconCls="icon-reload" onclick="updateForm('it')">Refresh</a>
+                    </div>
+                    
+                </div>
+           
+              
+        </div>  
+      </form>   
+
+    </div>
+
+
+
+        
+
+
+    
+    <div id="footer">     
+        <p>Julien Cochennec - Evelyne Duvernois-Berthet</p>
+        <p>Laboratoire de Biophysique</p>
+    </div>
+    
+    <div id="dd" class="easyui-dialog" title="Data upload" style="width:400px;height:200px;"
+    	data-options="iconCls:'icon-save',buttons:[],closable:false,closed:true,resizable:true,modal:true">
+    	You input data are uploading on our server.</br></br>
+      Please, wait a moment for the complete uploading of the data.
+    </div>
+
+     
+    
+    
+    <script>
+
+    // initialisation with iontorrent parameters
+    $('#itt').click();
+    
+    // submission form
+    function submitForm(){  
+        $('#bangsiExec').submit();
+    }
+      
+    // clear form - reinitialization of default values
+    function updateForm(technology){
+        $('#bangsiExec').form('load', '/parameters/'+technology);
+    }
+      
+    // ajax - alert windows
+    $('#bangsiExec').form({
+        url:"/bangsiExec",
+        onSubmit: function(){
+    
+            var isValid = $(this).form('validate');
+            //~ var roi = document.getElementById("ref").value;
+            
+            if(isValid){
+              return $('#dd').dialog('open');              
+            }
+            else {            
+              
+              $.messager.alert('Warning','Check your form - there is a mistake somewhere');
+              return $(this).form('validate');
+            }
+
+        },
+        
+        success:function(data){  
+            $('#dd').dialog('close');          
+            $.messager.alert('Info', data, 'info');
+            
+            $('#bangsiExec').form('clear');
+            $('#bangsiExec').form('load', '/parameters/it');
+          }
+    });
+
+            
+            
+      function IsEmail(email) {
+        var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if(!regex.test(email)) {
+           return false;
+        }else{
+           return true;
+        }
+      }
+    </script>
+
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+  <head>
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>   
+  </head>
+  
+  <body>    
+  
+  
+  
+ <div id="tt" class="easyui-tabs" style="width:100%;height:auto;">
+	 
+	 
+	 
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+	<div title="Overview" style="padding:10px"> 
+		<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+	</div>
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+
+ <div title="Skeletons" style="padding:10px">
+	<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+			 <table id="dgs2" class="easyui-datagrid" title="Information" style="width:auto;height:auto" 
+			 data-options="url:'/hit_list/{{idd}}',method:'get',rownumbers:true,pagination:true,pageSize:50,autoColWidth:true">
+			  <thead>
+				<tr>
+				<th data-options="field:'sequence',align:'right'">         sequence      </th>
+				<th data-options="field:'block',align:'right'">            block         </th>
+				<th data-options="field:'block_nb',align:'right'">         block_nb      </th>
+				<th data-options="field:'block_begin',align:'right'">      block_begin   </th>
+				<th data-options="field:'block_end',align:'right'">        block_end     </th>
+				<th data-options="field:'block_length',align:'right'">     block_length  </th>
+				<th data-options="field:'hit',align:'right'">       hit           </th>
+				<th data-options="field:'hit_nb',align:'right'">    hit_nb        </th>
+				<th data-options="field:'envfromB',align:'right'"> hit_begin     </th>
+				<th data-options="field:'envtoB',align:'right'">   hit_end       </th>
+				<th data-options="field:'alifromB',align:'right'"> hit_begin_ali     </th>
+				<th data-options="field:'alitoB',align:'right'">   hit_end_ali       </th>
+				<th data-options="field:'strand',align:'right'">   strand       </th>
+				<th data-options="field:'junction',align:'right'"> junction       </th>
+				</tr>
+				</thead>
+			 </table>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/datagrid-filter.js') }}"></script>
+ 
+       <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+	</div>
+
+
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+  <div title="Downloads" style="padding:10px">
+	  
+	  <div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+
+      <div class="easyui-layout" style="width:100%;height:500px">
+				      <table>
+					  				<tr><td>Data file:</td>
+										<td><a href={{working_dir}}/{{datafile}}>{{datafile}}</a></td>
+					  				    </tr>
+ 					  				<tr><td>Zip file:</td>
+										<td><a href={{working_dir}}/{{zipdatafile}}> {{zipdatafile}}</a></td>
+					  				    </tr>
+                    </table>
+                    
+   
+			</div>   
+       </div>  
+       
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+  <div title="Parameters" style="padding:10px">
+<div id="note_idd" style="width:auto;height:auto;padding-bottom:10px;color:red;">Please note this ID to access your results: {{idd}}	</div><br>  
+      <div class="easyui-layout" style="width:100%;height:500px">
+				      <table>
+					  				<tr><th class="ct">name</th>
+					  				    <th class="ct">value</th>
+					  				    </tr>
+					  				<tr><td>ID</td>
+										<td>{{idd}}</td>
+					  				    </tr>
+						{% for kk,myitem in parameters.items() %}
+						 				<tr>				
+												<td> {{kk}}</td>			
+												<td> {{myitem}}</td>			
+										</tr>
+						{% endfor %}
+                    </table>
+   <br><br><br><br>                 
+   Live long and prosper !!
+			</div>   
+       </div>  
+<!--
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+##########################################################################################################################
+-->
+    </div>
+    
+  </body>
+</html>

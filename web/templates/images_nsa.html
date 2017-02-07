@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>   
+  </head>
+  
+  
+  
+  <body>    
+    <div class="easyui-layout" style="width:1200px;height:350px;">
+         <div data-options="region:'center',title:'Global images',iconCls:'icon-ok'" style="padding:10px,width=400px;">
+                    <table>
+									
+						{% for raw,gray,inverted,binary,tag labelized in raw_images %}
+									
+									<tr> 
+												<td>{{tag}}</td>
+												<td> <div class='image1'><a href="/data/{{raw}}"><img src="{{working_dir}}/{{raw}}" ></a></div></td>
+									    <!--	<td> <div class='image1'><img src="{{working_dir}}/{{gray}}" ></div></td>   -->
+												<td> <div class='image1'><img src="{{working_dir}}/{{inverted}}" ></div></td>
+												<td> <div class='image1'><img src="{{working_dir}}/{{binary}}" ></div></td>			
+												<td> <div class='image1'><img src="{{working_dir}}/{{labelized}}" ></div></td>			
+									</tr>
+									<tr><td></td></tr>
+						{% endfor %}
+                    </table>
+  			
+        </div>
+     <div style="margin:20px 0;"></div>
+       <div data-options="region:'east',split:true,title:'East',collapsible:false" style="width:100px;">
+		   
+		
+        <table id="tt" title="DataGrid - BufferView" style="width:700px;height:300px" data-options="
+                    view:bufferview,rownumbers:true,singleSelect:true,
+                    url:'datagrid27_getdata.php?total=800',
+                    autoRowHeight:false,pageSize:50">
+            <thead>
+                <tr>
+                    <th field="inv" width="80">Inv No</th>
+                    <th field="date" width="100">Date</th>
+                    <th field="name" width="80">Name</th>
+                    <th field="amount" width="80" align="right">Amount</th>
+                    <th field="price" width="80" align="right">Price</th>
+                    <th field="cost" width="100" align="right">Cost</th>
+                    <th field="note" width="110">Note</th>
+                </tr>
+            </thead>
+        </table>
+        <script type="text/javascript">
+            $(function(){
+                $('#tt').datagrid();
+            });
+            function load(mode){
+                     $('#tt').datagrid({
+                        url:'datagrid27_getdata.php?total=800'
+                    });
+                }
+        </script>
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+		   
+        </div>  
+
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html>
+  <head>
+    
+     <meta charset="UTF-8">
+    
+    <title>NSA is a Snake Analyzor</title>
+
+
+  
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>
+  
+
+    
+  <script type="text/javascript">
+    
+    
+    // initialization of values according to the used technology
+    // ionTorrent VS illumina
+    
+    var currentValue = 0;
+    
+    function handleClick(techno) {
+      updateForm(techno.value);
+    }
+    
+    
+	</script>
+<!--
+	
+	<script language=javascript>
+    // validation of the DNA sequence of the ROI
+		function validateSequence(seq) { 
+    		var regex = /[ATCG]+\;[ATCG]+\;[ATCG]+/;
+    		return re.test(seq);
+		} 
+
+	</script>
+-->
+<style type="text/css">
+
+#hintbox{ /*CSS for pop up hint box */
+position:absolute;
+top: 0;
+background-color: lightyellow;
+width: 150px; /*Default width of hint.*/ 
+padding: 3px;
+border:1px solid black;
+font:normal 11px Verdana;
+line-height:18px;
+z-index:100;
+border-right: 3px solid black;
+border-bottom: 3px solid black;
+visibility: hidden;
+}
+
+.hintanchor{ /*CSS for link that shows hint onmouseover*/
+font-weight: bold;
+color: navy;
+margin: 3px 8px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+/***********************************************
+* Show Hint script- (c) Dynamic Drive (www.dynamicdrive.com)
+* Please keep this notice intact
+* Visit http://www.dynamicdrive.com/ for this script and 100s more.
+***********************************************/
+		
+var horizontal_offset="9px" //horizontal offset of hint box from anchor link
+
+/////No further editting needed
+
+var vertical_offset="0" //horizontal offset of hint box from anchor link. No need to change.
+var ie=document.all
+var ns6=document.getElementById&&!document.all
+
+function getposOffset(what, offsettype){
+var totaloffset=(offsettype=="left")? what.offsetLeft : what.offsetTop;
+var parentEl=what.offsetParent;
+while (parentEl!=null){
+totaloffset=(offsettype=="left")? totaloffset+parentEl.offsetLeft : totaloffset+parentEl.offsetTop;
+parentEl=parentEl.offsetParent;
+}
+return totaloffset;
+}
+
+function iecompattest(){
+return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
+}
+
+function clearbrowseredge(obj, whichedge){
+var edgeoffset=(whichedge=="rightedge")? parseInt(horizontal_offset)*-1 : parseInt(vertical_offset)*-1
+if (whichedge=="rightedge"){
+var windowedge=ie && !window.opera? iecompattest().scrollLeft+iecompattest().clientWidth-30 : window.pageXOffset+window.innerWidth-40
+dropmenuobj.contentmeasure=dropmenuobj.offsetWidth
+if (windowedge-dropmenuobj.x < dropmenuobj.contentmeasure)
+edgeoffset=dropmenuobj.contentmeasure+obj.offsetWidth+parseInt(horizontal_offset)
+}
+else{
+var windowedge=ie && !window.opera? iecompattest().scrollTop+iecompattest().clientHeight-15 : window.pageYOffset+window.innerHeight-18
+dropmenuobj.contentmeasure=dropmenuobj.offsetHeight
+if (windowedge-dropmenuobj.y < dropmenuobj.contentmeasure)
+edgeoffset=dropmenuobj.contentmeasure-obj.offsetHeight
+}
+return edgeoffset
+}
+
+function showhint(menucontents, obj, e, tipwidth){
+if ((ie||ns6) && document.getElementById("hintbox")){
+dropmenuobj=document.getElementById("hintbox")
+dropmenuobj.innerHTML=menucontents
+dropmenuobj.style.left=dropmenuobj.style.top=-500
+if (tipwidth!=""){
+dropmenuobj.widthobj=dropmenuobj.style
+dropmenuobj.widthobj.width=tipwidth
+}
+dropmenuobj.x=getposOffset(obj, "left")
+dropmenuobj.y=getposOffset(obj, "top")
+dropmenuobj.style.left=dropmenuobj.x-clearbrowseredge(obj, "rightedge")+obj.offsetWidth+"px"
+dropmenuobj.style.top=dropmenuobj.y-clearbrowseredge(obj, "bottomedge")+"px"
+dropmenuobj.style.visibility="visible"
+obj.onmouseout=hidetip
+}
+}
+
+function hidetip(e){
+dropmenuobj.style.visibility="hidden"
+dropmenuobj.style.left="-500px"
+}
+
+function createhintbox(){
+var divblock=document.createElement("div")
+divblock.setAttribute("id", "hintbox")
+document.body.appendChild(divblock)
+}
+
+if (window.addEventListener)
+window.addEventListener("load", createhintbox, false)
+else if (window.attachEvent)
+window.attachEvent("onload", createhintbox)
+else if (document.getElementById)
+window.onload=createhintbox
+
+</script>
+<script language="JavaScript1.2">
+<!--
+function refresh()
+{
+    window.location.reload( true );
+	this.form.reset();
+}
+//-->
+</script>
+
+  </head>
+  
+  
+  
+  <body>    
+    
+    <div id="header">
+      <h1> Welcome on Python for Snake Analysis (version: {{ version }})</h1>
+    </div>
+       
+   
+     
+     
+    <div id="container">
+
+      
+      
+      <form id="exec" method="post" action="/exec" enctype="multipart/form-data">
+        
+        <div class="easyui-accordion" >
+            
+              <div title="Main options" style="overflow:auto;padding:10px;" data-options="iconCls:'icon-ok',collapsed:false,collapsible:false">
+            
+                <div style="padding:10px 60px 20px 60px">
+                    
+                    <table>
+                     
+ 						<tr><td class="legend" colspan ="2">Images:</td>
+                        <tr><td class="label" colspan="1" style="width:500px">First image<font color="red">*</font>:</td>
+                        <td colspan = "1"> 
+                        <input class="easyui-filebox" name="raw_image1" data-options="prompt:'png/tiff file...', required:true" style="width:400px"></td>
+                      </tr>
+
+                      <tr><td class="label" colspan="1">Second image (optional):</td>
+                        <td colspan = "1"> 
+                        <input class="easyui-filebox" name="raw_image2" data-options="prompt:'png/tiff file...'" style="width:100%"></td>
+                       </tr> 
+                       
+                        <tr><td class="label" colspan="1" >Third image (optional):</td>
+                        <td colspan = "1"> 
+                        <input class="easyui-filebox" name="raw_image3" data-options="prompt:'png/tiff file...'" style="width:100%"></td>
+                      </tr>
+
+                      <tr><td class="label" colspan="1">Fourth image (optional):</td>
+                        <td colspan = "1"> 
+                        <input class="easyui-filebox" name="raw_image4" data-options="prompt:'png/tiff file...'" style="width:100%"></td>
+                       </tr> 
+                      </table>
+                      <table>
+						<tr><td class="legend" colspan ="4">Image inversion:</td>
+                         </tr>
+                         
+                      	 <tr>
+                      	     <td colspan = "1" style="width:500px"> Maximal value (image intensity): </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="inversion_max_val" id="inversion_max_val" data-options="required:true,precision:2,min:0,value:255"></input></td> 
+                        	 <td colspan = "1" style="width:70px">  <a href="#" class="hintanchor" onMouseover="showhint('The maximal value of grey scale image, used for image inversion, default is 255.', this, event, '200px')">[0-infinity]</a> </td>
+                    	  </tr>  
+ 		              </table>
+                      <table>
+							<tr><td class="legend" colspan ="3">Image binarization:</td>
+                         </tr>
+                     	  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Threshold value (image intensity): </td>
+             <!--        	     <td colspan = "1" style="width:30px"> <input class="easyui-numberbox" name="binary_threshold_val"  id="binary_threshold_val" data-options="required:true,precision:2,min:0,value:160"></input></td> 
+			 -->		   	 
+							 <td colspan = "1" style="width:30px"> <input class="easyui-textbox"  style="width:170px" name="binary_threshold_val"  id="binary_threshold_val" data-options="required:true,precision:2,min:0,value:160" ></input></td>                     
+   	                         <td colspan = "1" style="width:70px"> <a href="#" class="hintanchor" onMouseover="showhint('The threshold used to binarize image, default is 160.', this, event, '200px')">[0-infinity] </a></td>
+                    	  </tr>  
+                      </table>
+                      <table>
+	                    
+ 						<tr><td class="legend" colspan ="3">Skeleton filtering:</td>
+                         </tr>
+                     	  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Border size (pixels): </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="border_size"   id="border_size" data-options="required:true,precision:0,min:1,value:1"></input></td> 
+                        	 <td colspan = "1" style="width:70px"> <a href="#" class="hintanchor" onMouseover="showhint('The size of the margin around the image, snakes overlaping the margin are not considered, default is 1, connaot be 0.', this, event, '200px')">[1-infinity]</a> </td>
+                    	  </tr>  
+                    	  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Minimal snake length (pixels): </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="minimal_length"  id="minimal_length"  data-options="required:true,precision:0,min:0,value:60"></input></td> 
+                        	 <td colspan = "1" style="width:70px">  <a href="#" class="hintanchor" onMouseover="showhint('The minimal length of the snakes, snakes shorter than this value are not considered, default is 60.', this, event, '200px')">[0-infinity] </a></td>
+                    	  </tr>  
+                   	  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Maximal snake length (pixels): </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="maximal_length"  id="maximal_length" data-options="required:true,precision:0,min:0,value:120"></input></td> 
+                        	 <td colspan = "1" style="width:70px"> <a href="#" class="hintanchor" onMouseover="showhint('The maximal length of the snake, snakes longer than this value are not considered, default is 120.', this, event, '200px')">[0-infinity] </a>
+                    	  </tr>  
+                         <tr>
+                      	     <td colspan = "1"  style="width:500px"> Square size around snakes (pixels): </td>
+                      	     <td colspan = "1"  style="width:30px"><input class="easyui-numberbox" name="skel_area_size"  id="skel_area_size"data-options="required:true,precision:0,min:0,value:50"></input></td> 
+                        	 <td colspan = "1"  style="width:70px">   <a href="#" class="hintanchor" onMouseover="showhint('The size of the square around the analyzed snakes, only for speed optimization, default is 50.', this, event, '200px')">[0-infinity] </a>
+                    	  </tr>  
+                    </table>
+                      <table>
+							<tr><td class="legend" colspan ="3">Signal processing:</td>
+                         </tr>
+                     	  
+                          <tr>
+                      	     <td colspan = "1"  style="width:500px"> Point size (pixels): </td>
+                      	     <td colspan = "1"  style="width:30px"><input class="easyui-numberbox" name="radius"   id="radius" data-options="required:true,precision:0,min:1,value:2"></input></td> 
+                        	 <td colspan = "1"  style="width:70px"> [1-infinity] </td>
+                    	  </tr>  
+                     	  
+                          <tr>
+                      	     <td colspan = "1"  style="width:500px"> Minimal value for peaks: </td>
+                      	     <td colspan = "1"  style="width:30px"><input class="easyui-numberbox" name="peak_min"   id="peak_min" data-options="required:true,precision:0,min:1,value:80"></input></td> 
+                        	 <td colspan = "1"  style="width:70px"> [0-infinity] </td>
+                    	  </tr>  
+                        </table>
+                      <table>
+	
+   						<tr><td class="legend" colspan ="3">Output:</td>
+   						</tr>
+
+ 
+                         <tr>
+                      	     <td colspan = "1" style="width:500px"> Length for normalization </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="nb_x"  id="nb_x"  data-options="required:true,precision:0,min:-1,value:-1"></input></td> 
+                        	 <td colspan = "1" style="width:70px"> [-1 or 10-infinity] </td>
+                    	  </tr>  
+                     <table>
+	                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Clustering method: </td>
+                      	    </tr>
+                      	    <tr><td style="width:500px"></td>
+                        	    <td colspan = "1" style="width:10px"><input type="radio" name="clustering_method" value="nb_peaks"  style="vertical-align: middle ; margin: 0px" checked />nb of peaks<br /></input></td> 
+                      	     <tr><td style="width:500px"></td>
+								<td colspan = "1" style="width:10px"><input type="radio" name="clustering_method" value="kmeans"  style="vertical-align: middle ; margin: 0px" />kmeans<br /></input></td> 
+                   	  </tr>  
+                   	  </table>
+                   	  <table>
+						  <tr>
+                      	     <td colspan = "1" style="width:500px"> Number of clusters (only for kmeans): </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="cluster_nb"  id="cluster_nb"  data-options="required:true,precision:0,min:1,value:2"></input></td> 
+                        	 <td colspan = "1" style="width:70px"> [1-infinity] </td>
+						  </tr>
+                     </table>
+                      <table>
+	                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Alignment reference: </td>
+                      	    </tr>
+                      	    <tr><td style="width:500px"></td>
+                      	     <td colspan = "1" style="width:10px"><input type="radio" name="align_reference" value="max_peak"  style="vertical-align: middle ; margin: 0px" checked />highest peak<br /></input></td> 
+                       	     </tr>
+                       	     <tr><td style="width:500px"></td>
+                       	     <td colspan = "1" style="width:10px"><input type="radio" name="align_reference" value="first_peak"  style="vertical-align: middle ; margin: 0px" />first peak<br /></input></td> 
+                    	  </tr>  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Reference point at ...: </td>
+                      	  </tr>
+                      	  <tr><td style="width:500px"></td>
+                      	     <td colspan = "1" style="width:10px"><input type="radio" name="align_reverse" value="True"  style='vertical-align: middle ; margin: 0px; ' checked />the 5' side<br /></input></td> 
+                       	    </tr>
+                       	    <tr><td style="width:500px"></td>
+                       	     <td colspan = "1" style="width:10px"><input type="radio" name="align_reverse" value="False"  style="vertical-align: middle ; margin: 0px"/>the 3' side<br /></input></td> 
+                    	  </tr>  
+    
+                     </table>
+                      <table>
+	
+ 
+  						<tr><td class="legend" colspan ="10">Debug:</td>
+                  	  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Mode: </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="mode"  id="mode"  data-options="required:true,precision:0,min:1,value:2"></input></td> 
+                        	 <td colspan = "1" style="width:70px"> [1,2] </td>
+                    	  </tr>  
+                          <tr>
+                      	     <td colspan = "1" style="width:500px"> Verbose: </td>
+                      	     <td colspan = "1" style="width:30px"><input class="easyui-numberbox" name="verbose"  id="verbose"  data-options="required:true,precision:0,min:0,value:2"></input></td> 
+                        	 <td colspan = "1" style="width:70px"> [0-infinity] </td>
+                    	  </tr>  
+                       	  
+                     </table>
+                    
+                    <div style="text-align:center;padding-top:50px">
+                      <a class="easyui-linkbutton" iconCls="icon-ok" onclick="submitForm()">Submit</a>
+                      <a class="easyui-linkbutton" iconCls="icon-reload" onclick="refresh(); this.form.reset();">Refresh</a>
+                   </div>
+                    
+                </div>
+                  
+              </div>
+
+
+                        
+        </div>  
+      </form>   
+
+    </div>
+
+
+
+    
+    <div id="footer">     
+        <p>Loic Ponger</p>
+        <p>Laboratoire de Biophysique</p>
+    </div>
+    
+    <div id="dd" class="easyui-dialog" title="Job is running" style="width:400px;height:200px;"
+    	data-options="iconCls:'icon-save',buttons:[],closable:false,closed:true,resizable:true,modal:true">
+    	Your job is running ... 
+    </div>
+    
+    <script>
+    
+    // submission form
+    function submitForm(){  
+        $('#exec').submit();
+    }
+      
+    </script>
+
+
+
+    
+  </body>
+</html>

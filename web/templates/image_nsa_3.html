@@ -1,0 +1,373 @@
+<!doctype html>
+<html>
+  <head>
+<!--
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-easyui-themes/ui-cupertino_perso/easyui.css') }}" />
+-->
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/default/easyui.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='js/jQuery_UI/themes/icon.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.min.js') }}" /></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jQuery_UI/jquery.easyui.min.js') }}" /></script>   
+  </head>
+  
+  
+  
+  <body>    
+  
+  
+  
+ <div id="tt" class="easyui-tabs" style="width:100%;height:auto;">
+  <div title="Images" style="padding:10px">
+      <div class="easyui-layout" style="width:100%;height:500px">
+          <div data-options="region:'center',title:'Processing',iconCls:'icon-ok'" style="padding:10px,width=500px;">
+				      <table>
+					  				<tr><th class="ct">tag</th>
+					  				    <th class="ct">raw</th>
+					  				    <th class="ct">inverted</th>
+					  				    <th class="ct">binary</th>
+					  				    <th class="ct">labelized</th>
+					  				    <th class="ct">colored</th>
+					  				    </tr>
+						{% for raw,gray,inverted,binary,labelized,tag,colored,tag_original in raw_images %}
+									<tr><td span=1>{{tag_original}}</td>
+												<td> <div class='image1'><a href="/data/{{raw}}"><img src="{{working_dir}}/{{gray}}" ></a></div></td>
+									    <!--	<td> <div class='image1'><img src="{{working_dir}}/{{gray}}" ></div></td>   -->
+												<td> <div class='image1'><img src="{{working_dir}}/{{inverted}}" ></div></td>
+												<td> <div class='image1'><img src="{{working_dir}}/{{binary}}" ></div></td>			
+												<td> <div class='image1'><img src="{{working_dir}}/{{labelized}}" ></div></td>			
+												<td> <div class='image1'><a href="/data/{{colored}}"><img src="{{working_dir}}/{{colored}}" ></a></div></td>			
+									</tr>
+									<tr><td></td></tr>
+						{% endfor %}
+                    </table>
+                    
+                    <table>
+                    <tr >
+					<td class="colorlegend">Color code: </td>
+					<td class="colorlegend">border</td><td width="5px" bgcolor="#FF00FF"></td>
+					<td class="colorlegend">bad structure</td><td width="3px" bgcolor="#00FFFF"></td>
+					<td class="colorlegend">bad size</td><td width="3px" bgcolor="#FFFF00"></td>
+					<td class="colorlegend">no peak</td><td width="3x" bgcolor="#00FF00"></td>
+					<td class="colorlegend">one peak</td><td width="3px" bgcolor="#FF0000"></td>
+					<td class="colorlegend">two peaks</td><td width="3px" bgcolor="#0000FF"></td>
+					<td class="colorlegend">more peaks</td><td width="3px" bgcolor="#888888"></td>	
+					</tr>
+                    </table>
+			</div>   
+		 
+			</div>   
+			<div id="summaryy" style="width:auto;height:auto;padding-bottom:60px">
+			 <table id="dgs" class="easyui-datagrid" title="Summary" style="width:auto;height:auto" data-options="singleSelect:true,collapsible:true,url:'/summary_table',method:'get',rownumbers:true,pagination:false,pageSize:10,autoRowHeight:false">
+			  <thead>
+				<tr>
+				<th data-options="field:'tag'">tag</th>
+				<th data-options="field:'shape',align:'center'", bgcolor="red">Image size (pixels)</th>
+				<th data-options="field:'total',align:'right'">total skel (#)</th>
+				<th data-options="field:'selected',align:'right'">selected(#)</th>
+				<th data-options="field:'nb0',align:'right'">no peak (#)</th>
+				<th data-options="field:'nb1',align:'right'">one peak (#)</th>
+				<th data-options="field:'nb2',align:'right'">two peaks (#)</th>
+				<th data-options="field:'nb3',align:'right'">more peaks (#)</th>
+				<th data-options="field:'border',align:'right'">border (#)</th>
+				<th data-options="field:'badstructure',align:'right'">bad structure (#)</th>
+				<th data-options="field:'badsize',align:'right'">bad size (#)</th>
+				<th data-options="field:'time',align:'right'">processing time (s)</th>
+			</tr>
+				</thead>
+			 </table>
+		   
+		
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+		</div>   
+       </div>  
+
+  <div title="Skeletons" style="padding:10px">
+   <div style="margin:20px;padding-bottom:80px">
+       <div data-options="region:'center',split:true,title:'skeleton summary',collapsible:true" style="width:900px;padding-bottom:80px">
+			 <table id="dgs2" class="easyui-datagrid" title="Information" style="width:auto;height:auto" data-options="singleSelect:true,collapsible:true,url:'/skeleton_table',method:'get',rownumbers:true,pagination:false,pageSize:10000,autoRowHeight:false">
+			  <thead>
+				<tr>
+				<th data-options="field:'tag',width:80,align:'right'">tag</th>
+				<th data-options="field:'sk',width:80,align:'right'">sk</th>
+				<th data-options="field:'sk_shape',width:80,align:'right'">sk shape</th>
+				<th data-options="field:'sk_limit',width:80,align:'right'">sk limit</th>
+				<th data-options="field:'border',width:80,align:'right'">border</th>
+				<th data-options="field:'inLengthRange',width:80,align:'right'">length valid</th>
+				<th data-options="field:'length',width:80,align:'right'">length (px)</th>
+				<th data-options="field:'init_number_endpoints',width:120,align:'right'">initial number of EP</th>
+				<th data-options="field:'final_number_endpoints',width:150,align:'right'">final number of EP</th>
+				</tr>
+				</thead>
+			 </table>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/datagrid-filter.js') }}"></script>
+    <script type="text/javascript">
+		$('#dgs2').datagrid({
+			rowStyler: function(index,row){
+				
+				if (row.border){
+					return 'background-color:#FFACEC;color:#000000;'; // return inline style
+				}
+				if (! row.inLengthRange){
+					return 'background-color:#FFFF99;color:#000000;'; // return inline style
+				}
+
+
+					// the function can return predefined css class and inline style
+					// return {class:'r1', style:{'color:#fff'}};	
+	}
+});  
+
+
+
+        $(function(){
+            var dgs2 = $('#dgs2').datagrid();
+            dgs2.datagrid('enableFilter', [{
+                field:'init_number_endpoints',
+                type:'numberbox',
+                options:{precision:0},
+                op:['equal','notequal','less','greater']
+            },{
+                field:'final_number_endpoints',
+                type:'numberbox',
+                options:{precision:0},
+                op:['equal','notequal','less','greater']
+            },{
+                field:'length',
+                type:'numberbox',
+                options:{precision:1},
+                op:['equal','notequal','less','greater']
+ 
+            }]);
+        });
+
+
+
+
+
+
+
+     
+		</script>
+
+       <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+        </style>   
+	</div>
+    <div class="easyui-layout" style="width:100%;height:500px">
+          <div data-options="region:'center',title:'Images',iconCls:'icon-ok'" style="padding:10px,width=500px;">
+			  
+                 <table>
+										<tr>
+										{% for skel in skel_list %}
+												<th> {{skel}} </th>
+										{% endfor %}								
+										</tr>
+										<tr>
+										{% for inverted in small_inverted %}
+												<td> <div class='image2'><img src="{{working_dir}}/{{inverted}}" ></div></td>
+										{% endfor %}								
+										</tr>
+										<tr>
+										{% for binary in small_binary  %}
+												<td> <div class='image2'><img src="{{working_dir}}/{{binary}}" ></div></td>
+										{% endfor %}									
+										</tr>
+										<tr>
+										{% for skel in small_skel  %}
+												<td> <div class='image2'><img src="{{working_dir}}/{{skel}}" ></div></td>
+										{% endfor %}										
+										</tr>
+                    </table>
+  			  
+			</div>
+		</div>  
+		   
+       </div>
+      </div>		
+	<div title="Signal" style="padding:10px">
+		<div style="margin:20px 0;"></div>
+			<table>
+										{% for line in img_data  %}
+												<tr>
+											{% for sig in line  %}
+													<td><div class='image3'><img src="{{working_dir}}/{{sig}}" ></div></td>
+										
+											{% endfor %}										
+									
+												</tr>
+										{% endfor %}										
+			</table>
+		</div>
+		
+        <style type="text/css">
+            .datagrid-header-rownumber,.datagrid-cell-rownumber{
+                width:35px;
+            }
+            
+        </style>   
+
+
+
+	<div title="Download" style="padding:10px">
+		<div style="margin:20px 0;"></div>
+
+			<div id="p" class="easyui-panel" title="List of output files" style="width:800px;height:400px;padding:10px;">
+           
+				{% for file in files %}
+						<li><a href={{working_dir}}/{{file}}>{{working_dir}} - {{ file }}</a></li>
+				{% endfor %}
+			</div>
+ 
+		</div>
+
+<style type="text/css">
+
+	body {
+	font-family: tahoma; arial, sans-serif;
+	}
+</style>
+
+	{% for image, info in ps.items() %}
+	<div title="{{image}}" style="padding-top:20px;padding-bottom:500px">
+		<div style="margin:20px 0;"></div>
+
+			<style type="text/css">
+
+
+/* set the size of the definition list <dl> and add the background image */
+#imap-{{image}} {
+  display:block; 
+  width:{{info["image_height"]}}px; 
+  height:{{info["image_width"]}}px; 
+  background:url({{working_dir}}/{{info["colored"]}}) no-repeat; 
+  position:relative;
+  z-index:1;
+  }
+/* the hack for IE pre IE6 */
+* html #imap a:hover span {
+  width:{{info["image_height"]}}px; w\idth:{{info["image_width"]}}px;
+  } 
+
+
+  
+/* set up the definition list <dt><a> to hold the background image for the hover state */  
+#imap-{{image}} a#title {
+  display:block; 
+  width:{{info["image_height"]}}px; 
+  height:0; 
+  padding-top:{{info["image_width"]}}px; 
+  overflow:hidden; 
+  position:absolute; 
+  left:0; 
+  top:0;
+  background:transparent url({{working_dir}}/{{info["colored"]}}) no-repeat; 
+  cursor:default;
+  }
+  
+/* the <dt><a> hover style to move the background image to position 0 0 */  
+/*
+#imap-{{image}} a#title:hover {
+  background-position: 0 0; 
+  z-index:10;
+  } 
+  */
+#imap-{{image}} dd {
+  position:absolute; 
+  padding:0; 
+  margin:0;
+  }
+
+#imap-{{image}} a span, #imap-{{image}} a:visited span {
+  display:none;
+  }
+  
+{% for sk, sk_info in info["skels"].items() %}
+
+#imap-{{image}} #skel{{sk}} {
+  left:{{sk_info["sk_limit2"][2]}}px; 
+  top:{{sk_info["sk_limit2"][0]}}px; 
+  z-index:20;
+  }
+  
+  
+/* style the <dd><a> links physical size and the background image for the hover */
+#imap-{{image}} a#skeleton{{sk}} {
+  display:block; 
+  width:{{  sk_info["sk_limit2"][3] - sk_info["sk_limit2"][2] + 1 }}px; 
+  height:{{ sk_info["sk_limit2"][1] - sk_info["sk_limit2"][0] + 1}}px; 
+  background: transparent;
+  text-decoration:none; 
+  z-index:20;
+  }	
+  
+ /* move the span text to a common position at the bottom of the image map */
+#imap-{{image}} a#skeleton{{sk}}:hover span {
+  left:{{ sk_info["sk_limit2"][3] -  sk_info["sk_limit2"][2]}}px; 
+  top:{{  sk_info["sk_limit2"][1] -  sk_info["sk_limit2"][0]}}px;
+ }
+ 
+  /* move the link background image to position 0 0 when hovered */
+#imap-{{image}} a#skeleton{{sk}}:hover {
+  background: rgba(255,255,255,0.2);
+  }
+  
+  
+	{% endfor %}
+
+/* define the common styling for the span text */
+#imap-{{image}} a:hover span {
+  position:absolute;  
+  width:300px; 
+  display:block; 
+  font-family:arial; 
+  font-size:12px; 
+  background:#fff; 
+  background:url(static/white_box.png);
+  color:#000; 
+  z-index:50;
+  border: 5px solid #000; 
+  padding:5px;
+  }
+</style>
+
+<dl id="imap-{{image}}">
+	<dt>
+		<a id="title" href="#nogo" title="Nice Image-{{image}}">
+		Image-{{image}}
+		</a>	
+	</dt>
+	{% for sk, sk_info in info["skels"].items() %}
+	<dd id="skel{{sk}}">
+		<a id="skeleton{{sk}}" title="Beautiful skeleton {{sk}}" href="#nogo">
+		<span>
+			Skeleton {{sk}} !!!
+			<br />
+			<br />
+			border: {{sk_info["border"]}}<br>
+			structure: {{sk_info["init_number_endpoints"]}} to {{sk_info["final_number_endpoints"]}}  <br>
+			length: {{"%.2f"|format(sk_info["skel_length"])}} ({{sk_info["inLengthRange"]}}) <br>
+			peaks: {{sk_info["nb_peaks"]}} ({{sk_info["peaks"]}} - {{sk_info["values_at_peaks"]}}) <br>
+		</span>
+		</a>
+	</dd>
+	{% endfor %}
+	
+</dl>
+					
+ 
+		</div>
+	</div>
+	{% endfor %}
+
+
+    </div>
+    
+  </body>
+</html>
