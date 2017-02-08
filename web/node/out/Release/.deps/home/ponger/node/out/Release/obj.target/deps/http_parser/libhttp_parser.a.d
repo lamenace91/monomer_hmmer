@@ -1,0 +1,1 @@
+cmd_/home/ponger/node/out/Release/obj.target/deps/http_parser/libhttp_parser.a := rm -f /home/ponger/node/out/Release/obj.target/deps/http_parser/libhttp_parser.a && ar crs /home/ponger/node/out/Release/obj.target/deps/http_parser/libhttp_parser.a /home/ponger/node/out/Release/obj.target/http_parser/deps/http_parser/http_parser.o

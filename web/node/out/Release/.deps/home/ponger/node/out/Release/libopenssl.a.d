@@ -1,0 +1,1 @@
+cmd_/home/ponger/node/out/Release/libopenssl.a := ln -f "/home/ponger/node/out/Release/obj.target/deps/openssl/libopenssl.a" "/home/ponger/node/out/Release/libopenssl.a" 2>/dev/null || (rm -rf "/home/ponger/node/out/Release/libopenssl.a" && cp -af "/home/ponger/node/out/Release/obj.target/deps/openssl/libopenssl.a" "/home/ponger/node/out/Release/libopenssl.a")

@@ -1,0 +1,4 @@
+cmd_/home/ponger/node/out/Release/obj.target/v8_base/deps/v8/src/gdb-jit.o := g++ '-DV8_TARGET_ARCH_X64' '-DENABLE_DISASSEMBLER' '-DICU_UTIL_DATA_IMPL=ICU_UTIL_DATA_STATIC' -I../deps/v8  -pthread -Wall -Wextra -Wno-unused-parameter -m64 -fno-strict-aliasing -m64 -O3 -ffunction-sections -fdata-sections -fno-tree-vrp -fno-omit-frame-pointer -fdata-sections -ffunction-sections -O3 -fno-rtti -fno-exceptions -MMD -MF /home/ponger/node/out/Release/.deps//home/ponger/node/out/Release/obj.target/v8_base/deps/v8/src/gdb-jit.o.d.raw  -c -o /home/ponger/node/out/Release/obj.target/v8_base/deps/v8/src/gdb-jit.o ../deps/v8/src/gdb-jit.cc
+/home/ponger/node/out/Release/obj.target/v8_base/deps/v8/src/gdb-jit.o: \
+ ../deps/v8/src/gdb-jit.cc
+../deps/v8/src/gdb-jit.cc:
